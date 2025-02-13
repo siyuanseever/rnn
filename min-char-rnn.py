@@ -3,6 +3,7 @@ Minimal character-level Vanilla RNN model. Written by Andrej Karpathy (@karpathy
 BSD License
 """
 import numpy as np
+import pickle
 
 # data I/O
 data = open('sonnets.txt', 'r').read() # should be simple plain text file
@@ -95,6 +96,15 @@ while True:
         sample_ix = sample(hprev, inputs[0], 200)
         txt = ''.join(ix_to_char[ix] for ix in sample_ix)
         print(f"----\n {txt} \n----")
+        weights = {
+            'Wxh': Wxh,
+            'Whh': Whh,
+            'Why': Why,
+            'bh': bh,
+            'by': by
+        }
+        with open('weights.pkl', 'wb') as f:
+            pickle.dump(weights, f)
 
     # forward seq_length characters through the net and fetch gradient
     loss, dWxh, dWhh, dWhy, dbh, dby, hprev = lossFun(inputs, targets, hprev)
